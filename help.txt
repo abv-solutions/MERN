@@ -1,0 +1,19 @@
+MERN Stack App - Shopping List
+
+MongoDB : no-SQL database
+Express : back-end framework (for API)
+React   : front-end UI library/framework
+Node.js : server-side JavaScript runtime engine
+
+Back-end  : using Express on top of Node.js
+Front-end : using React
+
+API - connects to the DB
+    - get requests from front-end (React application)
+    - fetch/post/delete items from the database
+
+React-Strap - module for Bootstrap import inside React
+
+This will be a live app (on a live server)
+
+Postman link: http://localhost:5000/api/items
