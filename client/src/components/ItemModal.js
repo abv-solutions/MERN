@@ -9,28 +9,60 @@ import {
   Form,
   FormGroup,
   Label,
-  Input
+  Input,
+  Alert
 } from 'reactstrap';
 import {connect} from 'react-redux';
 import {addItem} from '../actions/itemActions';
 import PropTypes from 'prop-types';
 
+// Map state from root reducer to the props
+const mapStateToProps = (state) => ({
+  item: state.item,
+  isAuthenticated: state.auth.isAuthenticated,
+  error: state.error
+});
+
 class ItemModal extends Component {
   state = {
     modal: false,
-    name: ''
+    name: '',
+    msg: null
+  };
+
+  // Add prop types - for validation
+  static propTypes = {
+    item: PropTypes.object.isRequired,
+    isAuthenticated: PropTypes.bool,
+    error: PropTypes.object.isRequired
+  }
+
+  // Copy timeout error inside the local state
+  componentDidUpdate(prevProps) {
+    const error = this.props.error;
+    if (error !== prevProps.error) {
+      // Check for timeout error
+      if (error.id === 'LOGIN_TIMEOUT') {
+        this.setState({msg: error.msg.msg});
+      } else {
+        this.setState({msg: null});
+      }
+    }
   }
 
   toggle = () => {
     this.setState({
+      name: '',
       modal: !this.state.modal
     });
-  }
-  // Call function for deleting item
+  };
+
+  // Call function for input typing
   onChange = e => {
     this.setState({[e.target.name]: e.target.value});
-  }
-  // Call function for input typing
+  };
+
+  // Call function for adding item
   onSubmit = e => {
     e.preventDefault();
     const newItem = {
@@ -40,17 +72,27 @@ class ItemModal extends Component {
     this.props.addItem(newItem);
     // Close Modal
     this.toggle();
-  }
+  };
+
   // Create Modal with add option
   render() {
     return(
       <div>
-        <Button
-          color='dark'
-          style={{marginBottom: '2rem'}}
-          onClick={this.toggle}
-          >Add Item
-        </Button>
+        {this.state.msg ? (
+          <Alert color='danger'>{this.state.msg}</Alert>
+        ) : null}
+        {this.props.isAuthenticated ? (
+          <Button
+            color='dark'
+            style={{marginBottom: '1rem', marginLeft: '1rem'}}
+            onClick={this.toggle}
+            >Add Item
+          </Button>
+        ) : (
+          <h4 className='mb-4  ml-4'>
+            Please log in to manage items
+          </h4>
+        )}
         <Modal
           isOpen={this.state.modal}
           toggle={this.toggle}>
@@ -82,15 +124,7 @@ class ItemModal extends Component {
     );
   }
 }
-// Add prop types - for validation
-ItemModal.propTypes = {
-  AddItem: PropTypes.func.isRequired,
-  item: PropTypes.object.isRequired
-}
-// Map state from itemReducer.js to the props
-const mapStateToProps = (state) => ({
-  item: state.item
-});
+
 // Export rendered component to the front-end
 export default connect(
   mapStateToProps,

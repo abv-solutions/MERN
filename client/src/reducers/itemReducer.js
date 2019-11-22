@@ -1,5 +1,3 @@
-// Main item state definition
-
 // Import action types
 import {
   GET_ITEMS,
@@ -7,11 +5,13 @@ import {
   DELETE_ITEM,
   ITEMS_LOADING
 } from '../actions/types';
-// Set initial item state - global app state
+
+// Set initial item state
 const initialState = {
   items: [],
   loading: false
 };
+
 // Return function for each action type
 export default function(state = initialState, action) {
   switch(action.type) {
@@ -33,7 +33,7 @@ export default function(state = initialState, action) {
         ...state,
         items: state.items.filter(item => item._id !== action.payload)
       };
-
+    // Can be used to set a spinner while fetching data
     case ITEMS_LOADING:
       return {
         ...state,
