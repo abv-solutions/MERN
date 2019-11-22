@@ -15,5 +15,23 @@ API - connects to the DB
 React-Strap - module for Bootstrap import inside React
 
 This will be a live app (on a live server)
+  - heroku git:remote -a obscure-fjord-54361
+  - git push heroku master
+  - git log origin/master
 
-Postman link: http://localhost:5000/api/items
+Reducers - update state according to actions
+         - used to display and update data on the front-end
+         - data is represented as an application state
+
+Actions - facts about what happens in the application
+        - used to communicate with the back-end API
+
+Store - hold and grants access to the application state
+      - combines all the reducers
+
+Users - create/login links a token to the user id
+      - token has expiry date and is decoded in middleware
+
+Middleware - used to restrict access based on user tokens
+           - tokens are sent in request header to the API for decode
+           - if decode is successful, API request continues

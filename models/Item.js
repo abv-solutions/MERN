@@ -1,18 +1,22 @@
-// Module calls (Node)
 const mongoose = require('mongoose');
+const timestamp = require('mongoose-timestamp');
 const Schema = mongoose.Schema;
 
-// Create Mongoose Schema
+// Create item schema
 const ItemSchema = new Schema({
   name: {
     type: String,
-    required: true
+    required: true,
+    trim: true
   },
-  date: {
-    type: Date,
-    default: Date.now
+  quantity: {
+    type: Number,
+    required: true,
+    default: 1
   }
 });
 
-// Export Mongoose model to other files
-module.exports = Item = mongoose.model('item', ItemSchema);
+ItemSchema.plugin(timestamp);
+
+const Item = mongoose.model('Item', ItemSchema);
+module.exports = Item;
