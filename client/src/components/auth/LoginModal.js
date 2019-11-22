@@ -1,6 +1,5 @@
 // Generate Modal for user login
-
-import React, { Component } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import {
   Button,
   Modal,
@@ -13,123 +12,107 @@ import {
   NavLink,
   Alert
 } from 'reactstrap';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+
 import { login } from '../../actions/authActions';
 import { clearErrors } from '../../actions/errorActions';
+import { Context } from '../../contexts/context';
 
-// Map state from root reducer to the props
-const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated,
-  error: state.error
-});
-
-class LoginModal extends Component {
-  state = {
-    modal: false,
+const LoginModal = () => {
+  const { state, dispatch } = useContext(Context);
+  const { error } = state;
+  const [localState, setState] = useState({
     email: '',
     password: '',
-    msg: null
-  };
+    msg: null,
+    modal: false
+  });
 
-  // Add prop types - for validation
-  static propTypes = {
-    isAuthenticated: PropTypes.bool,
-    error: PropTypes.object.isRequired,
-    login: PropTypes.func.isRequired,
-    clearErrors: PropTypes.func.isRequired
-  };
-
-  // Copy login error inside the local state
-  componentDidUpdate(prevProps) {
-    const { error, isAuthenticated } = this.props;
-    if (error !== prevProps.error) {
+  useEffect(() => {
+    if (error.status) {
       // Check for login error
       if (error.id === 'LOGIN_FAIL') {
-        this.setState({ msg: error.msg.msg });
-      } else {
-        this.setState({ msg: null });
+        setState({
+          ...localState,
+          msg: error.msg.msg
+        });
       }
     }
+    // eslint-disable-next-line
+  }, [error]);
 
-    // If authenticated, close modal
-    if (this.state.modal) {
-      if (isAuthenticated) {
-        this.toggle();
-      }
-    }
-  }
-
-  toggle = () => {
-    // Clear errors via clearErrors action
-    this.props.clearErrors();
-    this.setState({
-      modal: !this.state.modal
+  const toggle = () => {
+    setState({
+      ...localState,
+      msg: null,
+      modal: !localState.modal
     });
   };
 
   // Call function for input typing
-  onChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
+  const onChange = e => {
+    setState({
+      ...localState,
+      [e.target.name]: e.target.value
+    });
   };
-
   // Call function for login attempt
-  onSubmit = e => {
+  const onSubmit = e => {
     e.preventDefault();
-    const { email, password } = this.state;
+    const { email, password } = localState;
     // Create user object
     const user = {
       email,
       password
     };
     // Attempt login via login action
-    this.props.login(user);
+    clearErrors(dispatch);
+    login(user, dispatch);
   };
 
   // Create Modal for user login
-  render() {
-    return (
-      <div>
-        <NavLink onClick={this.toggle} href='#'>
-          Login
-        </NavLink>
-        <Modal isOpen={this.state.modal} toggle={this.toggle}>
-          <ModalHeader toggle={this.toggle}>Login</ModalHeader>
-          <ModalBody>
-            {this.state.msg ? (
-              <Alert color='danger'>{this.state.msg}</Alert>
-            ) : null}
-            <Form onSubmit={this.onSubmit}>
-              <FormGroup>
-                <Label for='email'>Email</Label>
-                <Input
-                  type='text'
-                  name='email'
-                  id='email'
-                  placeholder='Email'
-                  className='mb-3'
-                  onChange={this.onChange}
-                />
-                <Label for='password'>Password</Label>
-                <Input
-                  type='password'
-                  name='password'
-                  id='password'
-                  placeholder='Password'
-                  className='mb-3'
-                  onChange={this.onChange}
-                />
-                <Button color='dark' style={{ marginTop: '2rem' }} block>
-                  Login
-                </Button>
-              </FormGroup>
-            </Form>
-          </ModalBody>
-        </Modal>
-      </div>
-    );
-  }
-}
+  return (
+    <div>
+      <NavLink onClick={toggle} href='#'>
+        Login
+      </NavLink>
+      <Modal isOpen={localState.modal} toggle={toggle}>
+        <ModalHeader toggle={toggle}>Login</ModalHeader>
+        <ModalBody>
+          {localState.msg ? (
+            <Alert color='danger'>{localState.msg}</Alert>
+          ) : null}
+          <Form onSubmit={onSubmit}>
+            <FormGroup>
+              <Label for='email'>Email</Label>
+              <Input
+                type='text'
+                name='email'
+                id='email'
+                placeholder='Email'
+                autoComplete='username'
+                className='mb-3'
+                onChange={onChange}
+              />
+              <Label for='password'>Password</Label>
+              <Input
+                type='password'
+                name='password'
+                id='password'
+                placeholder='Password'
+                autoComplete='current-password'
+                className='mb-3'
+                onChange={onChange}
+              />
+              <Button color='dark' style={{ marginTop: '2rem' }} block>
+                Login
+              </Button>
+            </FormGroup>
+          </Form>
+        </ModalBody>
+      </Modal>
+    </div>
+  );
+};
 
 // Export rendered component to the front-end
-export default connect(mapStateToProps, { login, clearErrors })(LoginModal);
+export default LoginModal;

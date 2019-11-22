@@ -1,72 +1,70 @@
 // Generate ShoppingList with delete option
 
-import React, {Component} from 'react';
-import {Container, ListGroup, ListGroupItem, Button} from 'reactstrap';
-import {CSSTransition,TransitionGroup} from 'react-transition-group';
-import {connect} from 'react-redux';
-import {getItems, deleteItem} from '../actions/itemActions';
-import PropTypes from 'prop-types';
+import React, { useContext, useEffect, useState } from 'react';
+import { Container, ListGroup, ListGroupItem, Button, Alert } from 'reactstrap';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
-// Map state from root reducer to the props
-const mapStateToProps = (state) => ({
-  item: state.item,
-  isAuthenticated: state.auth.isAuthenticated
-});
+import { Context } from '../contexts/context';
+import { getItems, deleteItem } from '../actions/itemActions';
+import { clearErrors } from '../actions/errorActions';
 
-class ShoppingList extends Component {
-  // Add prop types - for validation
-  static propTypes = {
-    getItems: PropTypes.func.isRequired,
-    deleteItem: PropTypes.func.isRequired,
-    item: PropTypes.object.isRequired,
-    isAuthenticated: PropTypes.bool
-  }
+const ShoppingList = () => {
+  // Get item state from context
+  const { state, dispatch } = useContext(Context);
+  const { item, auth, error } = state;
 
+  const [msg, setState] = useState(null);
   // Call action for getting items - lifecycle method
-  componentDidMount() {
-    // Puts item list in props.item
-    this.props.getItems();
-  }
+  useEffect(() => {
+    getItems(dispatch);
+    // eslint-disable-next-line
+  }, []);
+
+  // Copy error from state
+  useEffect(() => {
+    if (error.status) {
+      // Check for login error
+      if (error.id === 'TOKEN_ERROR_DEL') {
+        setState(error.msg.msg);
+      }
+    } else {
+      setState(null);
+    }
+    // eslint-disable-next-line
+  }, [error]);
 
   // Call action for deleting item
-  onDeleteClick = id => {
-    this.props.deleteItem(id);
-  }
+  const onDeleteClick = id => {
+    deleteItem(id, auth.token, dispatch);
+  };
 
-  // Create item list with delete option
-  render() {
-    // Access item list from the props
-    const {items} = this.props.item;
-    return (
-      <Container>
-        <ListGroup>
-          <TransitionGroup className="shopping-list">
-            {items.map(({_id, name}) => (
-              <CSSTransition key={_id} timeout={500} classNames="fade">
-                <ListGroupItem>
-                  {this.props.isAuthenticated ? (
-                    <Button
-                      className="remove-btn"
-                      color="danger"
-                      size="sm"
-                      onClick={this.onDeleteClick.bind(this, _id)}
-                      >&times;
-                    </Button>
-                  ) : null}
-                  {name}
-                </ListGroupItem>
-              </CSSTransition>
-            ))}
-          </TransitionGroup>
-        </ListGroup>
-        <br/><br/><br/><br/><br/>
-      </Container>
-    )
-  }
-}
+  return (
+    <Container>
+      {msg ? <Alert color='danger'>{msg}</Alert> : null}
+      <ListGroup className='mb-5 pb-5'>
+        <TransitionGroup className='shopping-list'>
+          {item.items.map(({ _id, name }) => (
+            <CSSTransition key={_id} timeout={500} classNames='fade'>
+              <ListGroupItem>
+                {auth.isAuthenticated ? (
+                  <Button
+                    className='remove-btn'
+                    color='danger'
+                    size='sm'
+                    onClick={() => onDeleteClick(_id)}
+                  >
+                    &times;
+                  </Button>
+                ) : null}
+                {name}
+              </ListGroupItem>
+            </CSSTransition>
+          ))}
+        </TransitionGroup>
+      </ListGroup>
+    </Container>
+  );
+};
 
 // Export rendered component to the front-end
-export default connect(
-  mapStateToProps,
-  {getItems, deleteItem}
-)(ShoppingList);
+export default ShoppingList;

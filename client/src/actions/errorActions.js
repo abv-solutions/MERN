@@ -1,17 +1,14 @@
-// Import action types
-import {GET_ERRORS, CLEAR_ERRORS} from './types';
-
 // Return errors
 export const returnErrors = (msg, status, id = null) => {
   return {
-    type: GET_ERRORS,
-    payload: {msg, status, id}
+    type: 'GET_ERRORS',
+    payload: { msg, status, id }
   };
 };
 
 // Clear errors
-export const clearErrors = () => {
-  return {
-    type: CLEAR_ERRORS
-  };
+export const clearErrors = dispatch => {
+  dispatch({
+    type: 'CLEAR_ERRORS'
+  });
 };
