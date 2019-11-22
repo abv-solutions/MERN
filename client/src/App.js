@@ -1,33 +1,27 @@
-import React, {Component} from 'react';
-import {Provider} from 'react-redux';
-import store from './store';
-import {loadUser} from './actions/authActions';
+import React from 'react';
+import { Container } from 'reactstrap';
+
+import ContextProvider from './contexts/context';
+
 import AppNavbar from './components/AppNavbar';
 import ShoppingList from './components/ShoppingList';
 import ItemModal from './components/ItemModal';
 import Footer from './components/Footer';
-import {Container} from 'reactstrap';
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
-class App extends Component {
-
-  componentDidMount() {
-    store.dispatch(loadUser());
-  }
-
-  render() {
-    return (
-      <Provider store={store}>
-        <AppNavbar />
-        <Container>
-          <ItemModal />
-          <ShoppingList />
-        </Container>
-        <Footer />
-      </Provider>
-    );
-  }
-}
+const App = () => {
+  return (
+    <ContextProvider>
+      <AppNavbar />
+      <Container>
+        <ItemModal />
+        <ShoppingList />
+      </Container>
+      <Footer />
+    </ContextProvider>
+  );
+};
 
 export default App;

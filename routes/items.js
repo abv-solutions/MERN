@@ -52,7 +52,7 @@ router.post('/', auth, async (req, res) => {
 });
 
 // Edit item
-router.put('/:id', auth, async (req, res) => {
+router.put('/:id', async (req, res) => {
   // Get fields from request body
   const { name, quantity } = req.body;
   // Validation for empty fields
