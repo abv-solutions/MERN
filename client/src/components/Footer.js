@@ -1,7 +1,6 @@
 import React from 'react';
-import { Navbar, Container } from 'reactstrap';
+import { Navbar } from 'reactstrap';
 
-//Create footer
 const Footer = () => {
   return (
     <Navbar className='fixed-bottom' color='dark' dark>

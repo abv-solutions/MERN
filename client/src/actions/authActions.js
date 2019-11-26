@@ -71,7 +71,7 @@ export const logout = dispatch => {
     type: 'LOGOUT_SUCCESS'
   });
 };
-// Create headers - used locally
+// Create headers
 export const headers = (token = null) => {
   // Set headers
   const config = {

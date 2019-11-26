@@ -1,5 +1,5 @@
-import { headers } from './authActions';
 import axios from 'axios';
+import { headers } from './authActions';
 import { returnErrors } from './errorActions';
 
 // Get items

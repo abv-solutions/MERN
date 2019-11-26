@@ -1,5 +1,3 @@
-// Generate Modal with add option
-
 import React, { useContext, useState, useEffect } from 'react';
 import {
   Button,
@@ -12,14 +10,13 @@ import {
   Input,
   Alert
 } from 'reactstrap';
-
-import { Context } from '../contexts/context';
 import { addItem } from '../actions/itemActions';
 import { clearErrors } from '../actions/errorActions';
+import { Context } from '../contexts/context';
 
 const ItemModal = () => {
   const { state, dispatch } = useContext(Context);
-  const { error, auth, item } = state;
+  const { item, auth, error } = state;
   const [localState, setState] = useState({
     name: '',
     msg: null,
@@ -29,7 +26,7 @@ const ItemModal = () => {
   // Copy error from state
   useEffect(() => {
     if (error.status) {
-      // Check for login error
+      // Check for errors
       if (error.id === 'TOKEN_ERROR_ADD' || error.id === 'EMPTY_FIELDS') {
         setState({
           ...localState,
@@ -48,14 +45,7 @@ const ItemModal = () => {
     // eslint-disable-next-line
   }, [item]);
 
-  //
-  useEffect(() => {
-    if (error.status) {
-      clearErrors(dispatch);
-    }
-    // eslint-disable-next-line
-  }, [localState.modal]);
-
+  // Clear errors
   const toggle = () => {
     setState({
       ...localState,
@@ -63,6 +53,7 @@ const ItemModal = () => {
       msg: null,
       modal: !localState.modal
     });
+    clearErrors(dispatch);
   };
 
   // Call function for input typing
@@ -83,7 +74,6 @@ const ItemModal = () => {
     addItem(newItem, auth.token, dispatch);
   };
 
-  // Create Modal with add option
   return (
     <div>
       {auth.isAuthenticated ? (
@@ -124,5 +114,4 @@ const ItemModal = () => {
   );
 };
 
-// Export rendered component to the front-end
 export default ItemModal;
