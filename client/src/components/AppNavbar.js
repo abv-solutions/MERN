@@ -13,13 +13,15 @@ import {
 import RegisterModal from './auth/RegisterModal';
 import LoginModal from './auth/LoginModal';
 import Logout from './auth/Logout';
-import { Context } from '../contexts/context';
 import { loadUser } from '../actions/authActions';
+import { Context } from '../contexts/context';
 
 const AppNavbar = () => {
   const { state, dispatch } = useContext(Context);
+  const { isAuthenticated, user } = state.auth;
   const [isOpen, setState] = useState(false);
 
+  // Load user
   useEffect(() => {
     loadUser(state.auth.token, dispatch);
     // eslint-disable-next-line
@@ -28,7 +30,6 @@ const AppNavbar = () => {
   const toggle = () => {
     setState(!isOpen);
   };
-  const { isAuthenticated, user } = state.auth;
 
   const authLinks = (
     <>
@@ -71,5 +72,4 @@ const AppNavbar = () => {
   );
 };
 
-// Export rendered component to the front-end
 export default AppNavbar;

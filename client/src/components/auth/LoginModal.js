@@ -1,4 +1,3 @@
-// Generate Modal for user login
 import React, { useContext, useState, useEffect } from 'react';
 import {
   Button,
@@ -12,7 +11,6 @@ import {
   NavLink,
   Alert
 } from 'reactstrap';
-
 import { login } from '../../actions/authActions';
 import { clearErrors } from '../../actions/errorActions';
 import { Context } from '../../contexts/context';
@@ -69,7 +67,6 @@ const LoginModal = () => {
     login(user, dispatch);
   };
 
-  // Create Modal for user login
   return (
     <div>
       <NavLink onClick={toggle} href='#'>
@@ -114,5 +111,4 @@ const LoginModal = () => {
   );
 };
 
-// Export rendered component to the front-end
 export default LoginModal;

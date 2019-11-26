@@ -1,20 +1,15 @@
-// Generate ShoppingList with delete option
-
 import React, { useContext, useEffect, useState } from 'react';
 import { Container, ListGroup, ListGroupItem, Button, Alert } from 'reactstrap';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-
-import { Context } from '../contexts/context';
 import { getItems, deleteItem } from '../actions/itemActions';
-import { clearErrors } from '../actions/errorActions';
+import { Context } from '../contexts/context';
 
 const ShoppingList = () => {
-  // Get item state from context
   const { state, dispatch } = useContext(Context);
   const { item, auth, error } = state;
-
   const [msg, setState] = useState(null);
-  // Call action for getting items - lifecycle method
+
+  // Get items
   useEffect(() => {
     getItems(dispatch);
     // eslint-disable-next-line
@@ -23,7 +18,7 @@ const ShoppingList = () => {
   // Copy error from state
   useEffect(() => {
     if (error.status) {
-      // Check for login error
+      // Check for errors
       if (error.id === 'TOKEN_ERROR_DEL') {
         setState(error.msg.msg);
       }
@@ -66,5 +61,4 @@ const ShoppingList = () => {
   );
 };
 
-// Export rendered component to the front-end
 export default ShoppingList;
