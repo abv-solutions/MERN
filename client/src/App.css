@@ -1,7 +1,15 @@
 .remove-btn {
   margin-right: 1rem;
 }
-
+.quantity {
+  display: inline-block;
+  position: absolute;
+  width: 65px;
+  height: 31px;
+  right: 1rem;
+  padding: 10px;
+}
+/* Transitions for item list */
 .fade-enter {
   opacity: 0.01;
 }
@@ -18,4 +26,22 @@
 .fade-exit-active {
   opacity: 0.01;
   transition: opacity 1000ms ease-in;
+}
+/* Transitions to correct spinner display */
+.spin-enter {
+  visibility: visible;
+}
+
+.spin-enter-active {
+  visibility: hidden;
+  transition: all 10ms;
+}
+
+.spin-exit {
+  visibility: hidden;
+}
+
+.spin-exit-active {
+  visibility: visible;
+  transition: all 10ms;
 }

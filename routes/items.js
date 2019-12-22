@@ -52,11 +52,11 @@ router.post('/', auth, async (req, res) => {
 });
 
 // Edit item
-router.put('/:id', async (req, res) => {
+router.put('/:id', auth, async (req, res) => {
   // Get fields from request body
-  const { name, quantity } = req.body;
+  const { quantity } = req.body;
   // Validation for empty fields
-  if (!name || !quantity) {
+  if (!quantity) {
     return res.status(400).json({ msg: 'Empty fields are not allowed' });
   }
   try {

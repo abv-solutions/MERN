@@ -4,16 +4,19 @@ import { returnErrors } from './errorActions';
 
 // Get items
 export const getItems = dispatch => {
-  // Items loading
   dispatch(itemsLoading());
-  axios
-    .get('/items')
-    .then(res => {
-      dispatch({ type: 'GET_ITEMS', payload: res.data });
-    })
-    .catch(err =>
-      dispatch(returnErrors(err.response.data, err.response.status))
-    );
+  // Simulate server delay
+  setTimeout(() => {
+    axios
+      .get('/items')
+      .then(res => {
+        dispatch({ type: 'GET_ITEMS', payload: res.data });
+      })
+      .catch(err => {
+        dispatch(clearFlags());
+        dispatch(returnErrors(err.response.data, err.response.status));
+      });
+  }, 1500);
 };
 // Add items
 export const addItem = (item, token, dispatch) => {
@@ -37,6 +40,27 @@ export const addItem = (item, token, dispatch) => {
       dispatch(returnErrors(err.response.data, err.response.status, id));
     });
 };
+// Update items
+export const updateItem = (item, token, dispatch) => {
+  const { id, quantity } = item;
+  const body = JSON.stringify({ quantity });
+  // Set items editing
+  dispatch(itemsEditing());
+  axios
+    .put(`/items/${id}`, body, headers(token))
+    .then(res =>
+      dispatch({
+        type: 'UPDATE_ITEM',
+        payload: item
+      })
+    )
+    .catch(err => {
+      dispatch(clearFlags());
+      dispatch(
+        returnErrors(err.response.data, err.response.status, 'TOKEN_ERROR_UPD')
+      );
+    });
+};
 // Delete items
 export const deleteItem = (id, token, dispatch) => {
   axios
@@ -57,5 +81,19 @@ export const deleteItem = (id, token, dispatch) => {
 export const itemsLoading = () => {
   return {
     type: 'ITEMS_LOADING'
+  };
+};
+
+// Set editing flag - used locally
+export const itemsEditing = () => {
+  return {
+    type: 'ITEMS_EDITING'
+  };
+};
+
+// Clear flags - used locally
+export const clearFlags = () => {
+  return {
+    type: 'CLEAR_FLAGS'
   };
 };

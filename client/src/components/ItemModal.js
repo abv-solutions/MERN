@@ -74,7 +74,7 @@ const ItemModal = () => {
     addItem(newItem, auth.token, dispatch);
   };
 
-  return (
+  return !auth.isLoading ? (
     <div>
       {auth.isAuthenticated ? (
         <Button
@@ -111,7 +111,7 @@ const ItemModal = () => {
         </ModalBody>
       </Modal>
     </div>
-  );
+  ) : null;
 };
 
 export default ItemModal;

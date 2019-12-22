@@ -8,7 +8,8 @@ export const reducer = (state, action) => {
         ...state,
         item: {
           items: action.payload,
-          isLoading: false
+          isLoading: false,
+          isEditing: state.item.isEditing
         }
       };
 
@@ -17,7 +18,26 @@ export const reducer = (state, action) => {
         ...state,
         item: {
           items: [action.payload, ...state.item.items],
-          isLoading: state.item.isLoading
+          isLoading: state.item.isLoading,
+          isEditing: state.item.isEditing
+        }
+      };
+
+    case 'UPDATE_ITEM':
+      return {
+        ...state,
+        item: {
+          items: state.item.items.map(item =>
+            item._id === action.payload.id
+              ? {
+                  // Update the item quantity
+                  ...item,
+                  quantity: action.payload.quantity
+                }
+              : item
+          ),
+          isLoading: state.item.isLoading,
+          isEditing: false
         }
       };
 
@@ -26,17 +46,40 @@ export const reducer = (state, action) => {
         ...state,
         item: {
           items: state.item.items.filter(item => item._id !== action.payload),
-          isLoading: state.item.isLoading
+          isLoading: state.item.isLoading,
+          isEditing: state.item.isEditing
         }
       };
 
     case 'ITEMS_LOADING':
-      // Can be used to set a spinner while fetching data
+      // Used to set a spinner while fetching data
       return {
         ...state,
         item: {
           items: [...state.item.items],
-          isLoading: true
+          isLoading: true,
+          isEditing: state.item.isEditing
+        }
+      };
+
+    case 'ITEMS_EDITING':
+      // Used to prevent api calls overflow
+      return {
+        ...state,
+        item: {
+          items: [...state.item.items],
+          isLoading: state.item.isLoading,
+          isEditing: true
+        }
+      };
+
+    case 'CLEAR_FLAGS':
+      return {
+        ...state,
+        item: {
+          items: [...state.item.items],
+          isLoading: false,
+          isEditing: false
         }
       };
 
@@ -84,7 +127,7 @@ export const reducer = (state, action) => {
       };
 
     case 'USER_LOADING':
-      // Can be used to set a spinner while fetching data
+      // Used to control components display while fetching data
       return {
         ...state,
         auth: {

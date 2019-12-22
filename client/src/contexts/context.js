@@ -7,7 +7,8 @@ const ContextProvider = ({ children }) => {
   const intialState = {
     item: {
       items: [],
-      isLoading: false
+      isLoading: false,
+      isEditing: false
     },
     auth: {
       token: localStorage.getItem('token'),

@@ -18,12 +18,12 @@ import { Context } from '../contexts/context';
 
 const AppNavbar = () => {
   const { state, dispatch } = useContext(Context);
-  const { isAuthenticated, user } = state.auth;
+  const { user, token, isAuthenticated, isLoading } = state.auth;
   const [isOpen, setState] = useState(false);
 
   // Load user
   useEffect(() => {
-    loadUser(state.auth.token, dispatch);
+    loadUser(token, dispatch);
     // eslint-disable-next-line
   }, []);
 
@@ -63,7 +63,7 @@ const AppNavbar = () => {
           <NavbarToggler onClick={toggle} />
           <Collapse isOpen={isOpen} navbar>
             <Nav className='ml-auto' navbar>
-              {isAuthenticated ? authLinks : guestLinks}
+              {!isLoading ? (isAuthenticated ? authLinks : guestLinks) : null}
             </Nav>
           </Collapse>
         </Container>
