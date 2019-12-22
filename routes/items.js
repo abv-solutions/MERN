@@ -23,7 +23,11 @@ router.get('/:id', auth, async (req, res) => {
     if (!item) {
       res.status(404).json({ msg: `Item doesn't exist` });
     } else {
-      res.status(200).json(item);
+      if (item.user_id == req.user.id) {
+        res.status(200).json(item);
+      } else {
+        res.status(400).json({ msg: 'You are not the author of this article' });
+      }
     }
   } catch (err) {
     if (err.message.includes('failed for value')) {
@@ -69,8 +73,12 @@ router.put('/:id', auth, async (req, res) => {
     if (!item) {
       res.status(404).json({ msg: `Item doesn't exist` });
     } else {
-      await Item.findOneAndUpdate({ _id: item._id }, req.body);
-      res.status(200).json({ msg: 'Item edited' });
+      if (item.user_id == req.user.id) {
+        await Item.findOneAndUpdate({ _id: item._id }, req.body);
+        res.status(200).json({ msg: 'Item edited' });
+      } else {
+        res.status(400).json({ msg: 'You are not the author of this article' });
+      }
     }
   } catch (err) {
     if (err.message.includes('failed for value')) {
@@ -88,8 +96,12 @@ router.delete('/:id', auth, async (req, res) => {
     if (!item) {
       res.status(404).json({ msg: `Item doesn't exist` });
     } else {
-      await item.remove();
-      res.status(200).json({ msg: 'Item deleted' });
+      if (item.user_id == req.user.id) {
+        await item.remove();
+        res.status(200).json({ msg: 'Item deleted' });
+      } else {
+        res.status(400).json({ msg: 'You are not the author of this article' });
+      }
     }
   } catch (err) {
     if (err.message.includes('failed for value')) {

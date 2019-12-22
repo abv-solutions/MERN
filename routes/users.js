@@ -34,7 +34,7 @@ router.post('/register', (req, res) => {
         jwt.sign(
           { id: user._id }, // Payload
           config.JWT_SECRET, // Secret key
-          { expiresIn: 15 }, // Sign options
+          { expiresIn: 300 }, // Sign options
           (err2, token) => {
             if (err2) throw err2;
             // Send response
@@ -90,7 +90,7 @@ router.post('/', async (req, res) => {
           jwt.sign(
             { id: user._id }, // Payload
             config.JWT_SECRET, // Secret key
-            { expiresIn: 150 }, // Sign options
+            { expiresIn: 300 }, // Sign options
             (err1, token) => {
               if (err1) throw err1;
               // Send response
