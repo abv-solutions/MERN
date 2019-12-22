@@ -3,12 +3,12 @@ import { headers } from './authActions';
 import { returnErrors } from './errorActions';
 
 // Get items
-export const getItems = dispatch => {
+export const getItems = (token, dispatch) => {
   dispatch(itemsLoading());
   // Simulate server delay
   setTimeout(() => {
     axios
-      .get('/items')
+      .get('/items', headers(token))
       .then(res => {
         dispatch({ type: 'GET_ITEMS', payload: res.data });
       })
@@ -96,4 +96,11 @@ export const clearFlags = () => {
   return {
     type: 'CLEAR_FLAGS'
   };
+};
+
+// Clear items - used from components
+export const clearItems = dispatch => {
+  dispatch({
+    type: 'CLEAR_ITEMS'
+  });
 };

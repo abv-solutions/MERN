@@ -83,6 +83,16 @@ export const reducer = (state, action) => {
         }
       };
 
+    case 'CLEAR_ITEMS':
+      return {
+        ...state,
+        item: {
+          items: [],
+          isLoading: false,
+          isEditing: false
+        }
+      };
+
     // Auth reducer
 
     case 'USER_LOADED':

@@ -13,6 +13,10 @@ const ItemSchema = new Schema({
     type: Number,
     required: true,
     default: 1
+  },
+  user_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true
   }
 });
 

@@ -16,11 +16,14 @@ const ShoppingList = () => {
   const { state, dispatch } = useContext(Context);
   const { item, auth, error } = state;
   const [msg, setState] = useState(null);
+
   // Get items
   useEffect(() => {
-    getItems(dispatch);
+    if (auth.token) {
+      getItems(auth.token, dispatch);
+    }
     // eslint-disable-next-line
-  }, []);
+  }, [auth.token]);
 
   // Copy error from state
   useEffect(() => {
@@ -58,12 +61,19 @@ const ShoppingList = () => {
       {msg ? <Alert color='danger'>{msg}</Alert> : null}
       <ListGroup className='mb-5 pb-5'>
         <TransitionGroup className='shopping-list'>
-          {!item.isLoading ? (
-            // Render items
+          {item.isLoading ? (
+            // Render spinner
+            <CSSTransition classNames='spin' timeout={0}>
+              <Spinner />
+            </CSSTransition>
+          ) : (
+            // If authenticated
+            auth.isAuthenticated &&
+            // Then render items
             item.items.map(({ _id, name, quantity }) => (
               <CSSTransition key={_id} timeout={1000} classNames='fade'>
                 <ListGroupItem>
-                  {auth.isAuthenticated ? (
+                  <>
                     <Button
                       className='remove-btn'
                       color='danger'
@@ -72,9 +82,7 @@ const ShoppingList = () => {
                     >
                       &times;
                     </Button>
-                  ) : null}
-                  {name}
-                  {auth.isAuthenticated ? (
+                    {name}
                     <Input
                       type='number'
                       name='quantity'
@@ -83,15 +91,10 @@ const ShoppingList = () => {
                       id={_id}
                       onChange={onEdit}
                     ></Input>
-                  ) : null}
+                  </>
                 </ListGroupItem>
               </CSSTransition>
             ))
-          ) : (
-            // Render spinner
-            <CSSTransition classNames='spin' timeout={0}>
-              <Spinner />
-            </CSSTransition>
           )}
         </TransitionGroup>
       </ListGroup>

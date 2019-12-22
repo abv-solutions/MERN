@@ -41,7 +41,7 @@ router.post('/register', (req, res) => {
             res.status(201).json({
               token,
               user: {
-                id: user._id,
+                _id: user._id,
                 name: user.name,
                 email: user.email
               }
@@ -90,14 +90,14 @@ router.post('/', async (req, res) => {
           jwt.sign(
             { id: user._id }, // Payload
             config.JWT_SECRET, // Secret key
-            { expiresIn: 15 }, // Sign options
+            { expiresIn: 150 }, // Sign options
             (err1, token) => {
               if (err1) throw err1;
               // Send response
               res.status(200).json({
                 token,
                 user: {
-                  id: user._id,
+                  _id: user._id,
                   name: user.name,
                   email: user.email
                 }
@@ -118,7 +118,7 @@ router.get('/user', auth, async (req, res) => {
     // User id comes from auth middleware
     const user = await User.findById(req.user.id);
     res.status(200).json({
-      id: user.id,
+      _id: user.id,
       name: user.name,
       email: user.email
     });

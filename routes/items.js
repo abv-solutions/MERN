@@ -5,9 +5,11 @@ const Item = require('../models/Item');
 const router = express.Router();
 
 // Get all items
-router.get('/', async (req, res) => {
+router.get('/', auth, async (req, res) => {
   try {
-    const items = await Item.find().sort({ updatedAt: -1 });
+    const items = await Item.find({ user_id: req.user.id }).sort({
+      updatedAt: -1
+    });
     res.status(200).json(items);
   } catch (err) {
     res.status(400).json({ msg: 'Something went wrong' });
@@ -15,7 +17,7 @@ router.get('/', async (req, res) => {
 });
 
 // Get single item
-router.get('/:id', async (req, res) => {
+router.get('/:id', auth, async (req, res) => {
   try {
     const item = await Item.findById(req.params.id);
     if (!item) {
@@ -34,13 +36,16 @@ router.get('/:id', async (req, res) => {
 
 // Create item
 router.post('/', auth, async (req, res) => {
+  // Get fields from request body
+  const { name } = req.body;
   // Validation for empty fields
-  if (!req.body.name) {
+  if (!name) {
     return res.status(400).json({ msg: 'Empty fields are not allowed' });
   }
   // Create new item model
   const newItem = new Item({
-    name: req.body.name
+    name,
+    user_id: req.user.id
   });
   try {
     // Save new item to mongodb
