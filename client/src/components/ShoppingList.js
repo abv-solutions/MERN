@@ -38,9 +38,14 @@ const ShoppingList = () => {
     // eslint-disable-next-line
   }, [error]);
 
-  // Call action for deleting item
+  // Call function for deleting item
   const onDeleteClick = id => {
     deleteItem(id, auth.token, dispatch);
+  };
+
+  // Call function to select entire input
+  const onFocus = e => {
+    e.target.select();
   };
 
   // Call function for item edit
@@ -90,6 +95,7 @@ const ShoppingList = () => {
                       value={quantity}
                       id={_id}
                       onChange={onEdit}
+                      onFocus={onFocus}
                     ></Input>
                   </>
                 </ListGroupItem>
