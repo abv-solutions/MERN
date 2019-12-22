@@ -50,8 +50,8 @@ const ShoppingList = () => {
       id: id,
       quantity: value
     };
-    // API request only if it's not pending
-    if (!item.isEditing) {
+    // Check input and request stage
+    if (!item.isEditing && value !== '' && value > 0 && value <= 20) {
       updateItem(editedItem, auth.token, dispatch);
     }
   };

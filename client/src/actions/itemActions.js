@@ -33,7 +33,7 @@ export const addItem = (item, token, dispatch) => {
     .catch(err => {
       let id;
       if (err.response.status === 400) {
-        id = 'EMPTY_FIELDS';
+        id = 'EMPTY_FIELDS_ADD';
       } else {
         id = 'TOKEN_ERROR_ADD';
       }
@@ -56,9 +56,13 @@ export const updateItem = (item, token, dispatch) => {
     )
     .catch(err => {
       dispatch(clearFlags());
-      dispatch(
-        returnErrors(err.response.data, err.response.status, 'TOKEN_ERROR_UPD')
-      );
+      let id;
+      if (err.response.status === 400) {
+        id = 'EMPTY_FIELDS_UPD';
+      } else {
+        id = 'TOKEN_ERROR_UPD';
+      }
+      dispatch(returnErrors(err.response.data, err.response.status, id));
     });
 };
 // Delete items

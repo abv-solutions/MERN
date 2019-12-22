@@ -27,7 +27,7 @@ const ItemModal = () => {
   useEffect(() => {
     if (error.status) {
       // Check for errors
-      if (error.id === 'TOKEN_ERROR_ADD' || error.id === 'EMPTY_FIELDS') {
+      if (error.id === 'TOKEN_ERROR_ADD' || error.id === 'EMPTY_FIELDS_ADD') {
         setState({
           ...localState,
           msg: error.msg.msg
