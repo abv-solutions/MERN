@@ -18,9 +18,9 @@ const auth = (req, res, next) => {
     next();
   } catch (err) {
     // Don't continue after middleware
-    return err.message.includes('jwt expired')
+    err.message.includes('jwt expired')
       ? res.status(401).json({ msg: 'Login token has expired' })
-      : res.status(400).json({ msg: 'Something went wrong' });
+      : res.status(500).json({ msg: 'Something went wrong' });
   }
 };
 

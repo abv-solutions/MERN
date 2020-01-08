@@ -4,14 +4,15 @@ const mongo = `mongodb+srv://${config.MONGODB_USER}:${config.MONGODB_PASS}@${con
 // Connect to MongoDB
 const connectDB = async () => {
   try {
-    await mongoose.set('useFindAndModify', false).connect(mongo, {
+    const conn = await mongoose.connect(mongo, {
+      useFindAndModify: false,
       useNewUrlParser: true,
       useCreateIndex: true,
       useUnifiedTopology: true
     });
-    console.log('MongoDB: Connected...');
+    console.log(`MongoDB Connected: ${conn.connection.host}`);
   } catch (err) {
-    console.log(`MongoDB: ${err.message}`);
+    console.log(`MongoDB Error: ${err.message}`);
     process.exit(1);
   }
 };

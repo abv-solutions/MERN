@@ -1,17 +1,18 @@
 const mongoose = require('mongoose');
 const timestamp = require('mongoose-timestamp');
+
 const Schema = mongoose.Schema;
 
 // Create item schema
 const ItemSchema = new Schema({
   name: {
     type: String,
-    required: true,
+    required: [true, 'Please add an item name'],
     trim: true
   },
   quantity: {
     type: Number,
-    required: true,
+    required: [true, 'Please add an item quantity'],
     default: 1
   },
   user_id: {
@@ -23,4 +24,5 @@ const ItemSchema = new Schema({
 ItemSchema.plugin(timestamp);
 
 const Item = mongoose.model('Item', ItemSchema);
+
 module.exports = Item;

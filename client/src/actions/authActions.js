@@ -6,7 +6,7 @@ export const loadUser = (token, dispatch) => {
   // User loading
   dispatch(userLoading());
   axios
-    .get('/users/user', headers(token))
+    .get('/users', headers(token))
     .then(res =>
       dispatch({
         type: 'USER_LOADED',
@@ -21,7 +21,7 @@ export const loadUser = (token, dispatch) => {
       dispatch(returnErrors(err.response.data, err.response.status));
     });
 };
-// Register user
+// Register new user
 export const register = ({ name, email, password }, dispatch) => {
   // Request body
   const body = JSON.stringify({ name, email, password });
