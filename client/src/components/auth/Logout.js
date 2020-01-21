@@ -7,6 +7,7 @@ import { Context } from '../../contexts/context';
 
 const Logout = () => {
   const { dispatch } = useContext(Context);
+
   const onClick = () => {
     clearItems(dispatch);
     logout(dispatch);
