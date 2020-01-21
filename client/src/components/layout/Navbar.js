@@ -10,11 +10,11 @@ import {
   NavItem,
   Container
 } from 'reactstrap';
-import RegisterModal from './auth/RegisterModal';
-import LoginModal from './auth/LoginModal';
-import Logout from './auth/Logout';
-import { loadUser } from '../actions/authActions';
-import { Context } from '../contexts/context';
+import RegisterModal from '../auth/RegisterModal';
+import LoginModal from '../auth/LoginModal';
+import Logout from '../auth/Logout';
+import { loadUser } from '../../actions/authActions';
+import { Context } from '../../contexts/context';
 
 const AppNavbar = () => {
   const { state, dispatch } = useContext(Context);

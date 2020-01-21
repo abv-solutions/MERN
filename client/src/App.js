@@ -5,10 +5,10 @@ import './App.css';
 
 import ContextProvider from './contexts/context';
 
-import AppNavbar from './components/AppNavbar';
+import AppNavbar from './components/layout/Navbar';
 import ShoppingList from './components/ShoppingList';
 import ItemModal from './components/ItemModal';
-import Footer from './components/Footer';
+import Footer from './components/layout/Footer';
 
 const App = () => {
   return (

@@ -8,7 +8,7 @@ import {
   Input
 } from 'reactstrap';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import Spinner from './spinner/Spinner';
+import Spinner from './layout/Spinner';
 import { getItems, updateItem, deleteItem } from '../actions/itemActions';
 import { Context } from '../contexts/context';
 
