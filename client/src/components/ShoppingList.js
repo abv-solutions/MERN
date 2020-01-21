@@ -77,7 +77,7 @@ const ShoppingList = () => {
             // Then render items
             item.items.map(({ _id, name, quantity }) => (
               <CSSTransition key={_id} timeout={1000} classNames='fade'>
-                <ListGroupItem>
+                <ListGroupItem className='item'>
                   <>
                     <Button
                       className='remove-btn'

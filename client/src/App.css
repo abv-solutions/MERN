@@ -1,15 +1,19 @@
+.item {
+  overflow: hidden;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
 .remove-btn {
-  margin-right: 1rem;
+  width: 2rem;
+  margin: 0.25rem 1rem 0.25rem 0;
 }
+
 .quantity {
-  display: inline-block;
-  position: absolute;
-  width: 65px;
-  height: 31px;
-  right: 1rem;
-  padding: 10px;
+  width: 4rem;
+  margin: 0.25rem 0 0.25rem auto;
 }
-/* Transitions for item list */
+/* Transitions for items list */
 .fade-enter {
   opacity: 0.01;
 }
