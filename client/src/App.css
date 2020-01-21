@@ -13,7 +13,7 @@
   width: 4rem;
   margin: 0.25rem 0 0.25rem auto;
 }
-/* Transitions for items list */
+/* Transitions for item list */
 .fade-enter {
   opacity: 0.01;
 }
